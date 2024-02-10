@@ -12,22 +12,20 @@ submit.addEventListener("click", async ()=>{
     if (text) {
         const formdata = new FormData()
         formdata.append("name", text)
-        axios({
+        fetch(`${url}/post` , {
             "method": "POST",
-            "url": `${url}/post`,
-            data: formdata,
-            headers: { "Content-Type": "multipart/form-data" },
+            body: formdata,
         }).then(()=>window.location.reload())
     }
     
 })
 
 window.addEventListener("load", async ()=>{
-    axios.get(`${url}/post`).then((res)=>{
+    fetch(`${url}/post`).then(res=>res.json()).then((res)=>{
         const regex = /ObjectId/g
         const regex2 = /[()]/g
         const regex3 = /'/g
-        const parsed = JSON.parse(res.data.replace(regex, "").replace(regex2, "").replace(regex3, `"`))
+        const parsed = JSON.parse(res.replace(regex, "").replace(regex2, "").replace(regex3, `"`))
         console.log(parsed)
         parsed.map(item=>{
             const btn = document.createElement("button")
@@ -38,7 +36,7 @@ window.addEventListener("load", async ()=>{
             div.appendChild(span)
             btn.textContent = "delete"
             btn.addEventListener("click", async () => {
-                axios.get(`${url}/post/${item["_id"]}`).then(()=>window.location.reload())
+                fetch(`${url}/post/${item["_id"]}`).then(()=>window.location.reload())
             })
             div.appendChild(btn)
             list.appendChild(div)
