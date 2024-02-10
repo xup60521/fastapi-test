@@ -14,7 +14,7 @@ load_dotenv()
 
 app = FastAPI()
 origins = [
-    "*"
+    "https://xup60521.github.io/fastapi-test"
 ]
 
 app.add_middleware(
