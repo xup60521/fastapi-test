@@ -1,8 +1,8 @@
 import os
 from bson import ObjectId
 from dotenv import load_dotenv
-from fastapi import FastAPI, Request, Response
-from typing import Union
+from fastapi import FastAPI, Request, Response, Form
+from typing import Union, Annotated
 from pydantic import BaseModel
 from pymongo import MongoClient
 from fastapi.middleware.cors import CORSMiddleware
@@ -36,15 +36,15 @@ db = mongo_client["ToDo"]
 collection = db["data"]
 
 class Item(BaseModel):
-    name: str 
+    str
 
 @app.get("/")
 def root():
     return {"hello": "world"}
 
 @app.post("/post")
-async def newPost(item: Item):
-    text = item.name
+async def newPost(name: Annotated[str, Form()]):
+    text = name
     collection.insert_one({"name": text})
     return "ok bye"
 
@@ -58,7 +58,7 @@ async def getPost():
     jsonString += "]"
     return jsonString
 
-@app.delete("/post/{id}")
+@app.get("/post/{id}")
 async def deletePost(id: str):
     collection.delete_one({"_id": ObjectId(id)})
     return "ok"
