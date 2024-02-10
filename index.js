@@ -3,7 +3,7 @@
 const input = document.getElementById("input")
 const submit = document.getElementById("submit")
 const list = document.getElementById("list")
-const url = "http://fastapi-test-nine.vercel.app"
+const url = "https://fastapi-test-nine.vercel.app"
 // const url = "http://127.0.0.1:8000"
 
 submit.addEventListener("click", async ()=>{
