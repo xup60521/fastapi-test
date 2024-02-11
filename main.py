@@ -1,13 +1,10 @@
 import os
 from bson import ObjectId
 from dotenv import load_dotenv
-from fastapi import FastAPI, Request, Response, Form
-from typing import Union, Annotated
-from pydantic import BaseModel
+from fastapi import FastAPI, Form
+from typing import Annotated
 from pymongo import MongoClient
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import ORJSONResponse
-
 import json
 
 load_dotenv()
@@ -35,28 +32,26 @@ except:
 db = mongo_client["ToDo"]
 collection = db["data"]
 
-class Item(BaseModel):
-    str
-
 @app.get("/")
-def root():
+def root(): #隨意名稱都行
     return {"hello": "world"}
 
 @app.post("/post")
 async def newPost(name: Annotated[str, Form()]):
     text = name
     collection.insert_one({"name": text})
-    return "ok bye"
-
+    return "ok"
+        
 @app.get("/post")
-async def getPost():
+def getPosts():
     data = collection.find({})
-    jsonString = "["
-    for i in data:
-        jsonString += f"{i},"
-    jsonString = jsonString.rstrip(",")
-    jsonString += "]"
-    return jsonString
+    list = []
+    for x in data:
+        list.append({
+            "_id": str(x["_id"]),
+            "name": x["name"]
+        })
+    return list
 
 @app.get("/post/{id}")
 async def deletePost(id: str):
