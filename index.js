@@ -22,7 +22,7 @@ submit.addEventListener("click", async ()=>{
 
 window.addEventListener("load", async ()=>{
     fetch(`${url}/post`).then(res=>res.json()).then((res)=>{
-        res.map(item=>{
+        res.forEach(item=>{
             const btn = document.createElement("button")
             const div = document.createElement("div")
             div.id = "item"
