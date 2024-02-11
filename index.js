@@ -22,12 +22,7 @@ submit.addEventListener("click", async ()=>{
 
 window.addEventListener("load", async ()=>{
     fetch(`${url}/post`).then(res=>res.json()).then((res)=>{
-        const regex = /ObjectId/g
-        const regex2 = /[()]/g
-        const regex3 = /'/g
-        const parsed = JSON.parse(res.replace(regex, "").replace(regex2, "").replace(regex3, `"`))
-        console.log(parsed)
-        parsed.map(item=>{
+        res.map(item=>{
             const btn = document.createElement("button")
             const div = document.createElement("div")
             div.id = "item"
